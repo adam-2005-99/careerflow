@@ -1,10 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, status
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 from typing import Optional
+from pydantic import BaseModel, ConfigDict
 
-from fastapi import FastAPI, status, HTTPException
+import models
+from database import engine, get_db
+
+
+models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
@@ -18,13 +23,6 @@ app.add_middleware(
 )
 
 
-class JobApplication(BaseModel):
-    company: str
-    role: str
-    status: str = "Applied"
-    location: Optional[str] = None
-    job_url: Optional[str] = None
-    notes: Optional[str] = None
 
 
 class JobApplicationCreate(BaseModel):
@@ -45,10 +43,10 @@ class JobApplicationUpdate(BaseModel):
     notes: Optional[str] = None
     
 
-applications = []
 
 class JobApplication(JobApplicationCreate):
     id: int
+    model_config = ConfigDict(from_attributes=True)
 
 
 @app.get("/")
@@ -65,36 +63,52 @@ def health_check():
     status_code=status.HTTP_201_CREATED,
     response_model=JobApplication,
 )
-def create_application(application: JobApplicationCreate):
-    new_application = JobApplication(
-        id=len(applications) + 1,
+def create_application(
+    application: JobApplicationCreate,
+    db: Session = Depends(get_db),
+):
+    new_application = models.JobApplication(
         **application.model_dump()
     )
 
-    applications.append(new_application)
+    db.add(new_application)
+    db.commit()
+    db.refresh(new_application)
+
     return new_application
+
 
 
 @app.get(
     "/api/applications",
     response_model=list[JobApplication],
 )
-def get_applications():
-    return applications
+def get_applications(
+    db: Session = Depends(get_db),
+):
+    return db.query(models.JobApplication).all()
+
+
 
 @app.get(
     "/api/applications/{application_id}",
     response_model=JobApplication,
 )
-def get_application(application_id: int):
-    for application in applications:
-        if application.id == application_id:
-            return application
+def get_application(
+    application_id: int,
+    db: Session = Depends(get_db),
+):
+    application = db.query(models.JobApplication).filter(
+        models.JobApplication.id == application_id
+    ).first()
 
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Application not found"
-    ) 
+    if application is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Application not found"
+        )
+
+    return application
 
 
 @app.patch(
@@ -103,25 +117,28 @@ def get_application(application_id: int):
 )
 def update_application(
     application_id: int,
-    update: JobApplicationUpdate
+    update: JobApplicationUpdate,
+    db: Session = Depends(get_db),
 ):
-    for index, application in enumerate(applications):
-        if application.id == application_id:
+    application = db.query(models.JobApplication).filter(
+        models.JobApplication.id == application_id
+    ).first()
 
-            update_data = update.model_dump(exclude_unset=True)
+    if application is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Application not found"
+        )
 
-            updated_application = application.model_copy(
-                update=update_data
-            )
+    update_data = update.model_dump(exclude_unset=True)
 
-            applications[index] = updated_application
+    for key, value in update_data.items():
+        setattr(application, key, value)
 
-            return updated_application
+    db.commit()
+    db.refresh(application)
 
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Application not found"
-    )
+    return application
     
     
 
@@ -129,13 +146,21 @@ def update_application(
     "/api/applications/{application_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_application(application_id: int):
-    for index, application in enumerate(applications):
-        if application.id == application_id:
-            applications.pop(index)
-            return
+def delete_application(
+    application_id: int,
+    db: Session = Depends(get_db),
+):
+    application = db.query(models.JobApplication).filter(
+        models.JobApplication.id == application_id
+    ).first()
 
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Application not found"
-    )
+    if application is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Application not found"
+        )
+
+    db.delete(application)
+    db.commit()
+
+    return
