@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 class JobApplicationCreate(BaseModel):
     company: str
@@ -23,3 +23,20 @@ class JobApplicationUpdate(BaseModel):
 class JobApplication(JobApplicationCreate):
     id: int
     model_config = ConfigDict(from_attributes=True)
+    
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+
+    model_config = ConfigDict(from_attributes=True)
+    
+    
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str

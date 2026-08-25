@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 import models
 from database import get_db
 from schemas import JobApplication, JobApplicationCreate, JobApplicationUpdate
+from dependencies import get_current_user
 
 
 router = APIRouter(
@@ -20,9 +21,11 @@ router = APIRouter(
 def create_application(
     application: JobApplicationCreate,
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
     new_application = models.JobApplication(
-        **application.model_dump()
+        **application.model_dump(),
+        user_id=current_user.id,
     )
 
     db.add(new_application)
@@ -39,8 +42,11 @@ def create_application(
 )
 def get_applications(
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
-    return db.query(models.JobApplication).all()
+    return db.query(models.JobApplication).filter(
+        models.JobApplication.user_id == current_user.id
+    ).all()
 
 
 
@@ -51,9 +57,11 @@ def get_applications(
 def get_application(
     application_id: int,
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
     application = db.query(models.JobApplication).filter(
-        models.JobApplication.id == application_id
+        models.JobApplication.id == application_id,
+        models.JobApplication.user_id == current_user.id,
     ).first()
 
     if application is None:
@@ -73,9 +81,11 @@ def update_application(
     application_id: int,
     update: JobApplicationUpdate,
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
     application = db.query(models.JobApplication).filter(
-        models.JobApplication.id == application_id
+        models.JobApplication.id == application_id,
+        models.JobApplication.user_id == current_user.id,
     ).first()
 
     if application is None:
@@ -103,9 +113,11 @@ def update_application(
 def delete_application(
     application_id: int,
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
     application = db.query(models.JobApplication).filter(
-        models.JobApplication.id == application_id
+        models.JobApplication.id == application_id,
+        models.JobApplication.user_id == current_user.id,
     ).first()
 
     if application is None:
