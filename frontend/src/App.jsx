@@ -1,27 +1,20 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectRoute";
+import "./App.css";
+import Register from "./pages/Register";
 
 function App() {
-  const [status, setStatus] = useState("Loading...");
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/health")
-      .then((response) => response.json())
-      .then((data) => {
-        setStatus(data.status);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setStatus("Backend connection failed");
-      });
-  }, []);
-
   return (
-    <div>
-      <h1>CareerFlow</h1>
-      <p>Backend status: {status}</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App
+export default App;
