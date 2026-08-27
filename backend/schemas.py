@@ -1,10 +1,20 @@
 from typing import Optional
 from pydantic import BaseModel, ConfigDict, EmailStr
+from enum import Enum
+
+
+    
+class ApplicationStatus(str, Enum):
+    APPLIED = "Applied"
+    INTERVIEW = "Interview"
+    OFFER = "Offer"
+    REJECTED = "Rejected"
+    
 
 class JobApplicationCreate(BaseModel):
     company: str
     role: str
-    status: str = "Applied"
+    status: ApplicationStatus = ApplicationStatus.APPLIED
     location: Optional[str] = None
     job_url: Optional[str] = None
     notes: Optional[str] = None
@@ -13,7 +23,7 @@ class JobApplicationCreate(BaseModel):
 class JobApplicationUpdate(BaseModel):
     company: Optional[str] = None
     role: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[ApplicationStatus] = None
     location: Optional[str] = None
     job_url: Optional[str] = None
     notes: Optional[str] = None

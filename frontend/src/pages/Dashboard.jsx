@@ -17,6 +17,8 @@ function Dashboard() {
     const [editingId, setEditingId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
+    const [jobUrl, setJobUrl] = useState("");
+    const [notes, setNotes] = useState("");
 
 
     useEffect(() => {
@@ -88,6 +90,8 @@ function Dashboard() {
                         role,
                         status,
                         location,
+                        job_url: jobUrl,
+                        notes: notes,
                     }),
                 }
                 );
@@ -112,6 +116,8 @@ function Dashboard() {
                 setRole("");
                 setStatus("Applied");
                 setLocation("");
+                setJobUrl("");
+                setNotes("");
 
                 return;
             } catch (error) {
@@ -132,10 +138,12 @@ function Dashboard() {
                 Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                company,
-                role,
-                status,
-                location,
+                    company,
+                    role,
+                    status,
+                    location,
+                    job_url: jobUrl,
+                    notes: notes,
                 }),
             }
             );
@@ -154,6 +162,8 @@ function Dashboard() {
             setRole("");
             setStatus("Applied");
             setLocation("");
+            setJobUrl("");
+            setNotes("");
         } catch (error) {
             setError("Could not connect to the server");
         }
@@ -188,12 +198,32 @@ function Dashboard() {
         }
     }
 
+    // function handleEditApplication(application) {
+    //     setEditingId(application.id);
+    //     setCompany(application.company);
+    //     setRole(application.role);
+    //     setStatus(application.status);
+    //     setLocation(application.location || "");
+    // }
+
     function handleEditApplication(application) {
         setEditingId(application.id);
         setCompany(application.company);
         setRole(application.role);
         setStatus(application.status);
         setLocation(application.location || "");
+        setJobUrl(application.job_url || "");
+        setNotes(application.notes || "");
+    }
+
+    function handleCancelEdit() {
+        setEditingId(null);
+        setCompany("");
+        setRole("");
+        setStatus("Applied");
+        setLocation("");
+        setJobUrl("");
+        setNotes("");
     }
 
     const filteredApplications = applications.filter((application) => {
@@ -243,8 +273,14 @@ function Dashboard() {
                     setStatus={setStatus}
                     location={location}
                     setLocation={setLocation}
+                    jobUrl={jobUrl}
+                    setJobUrl={setJobUrl}
+                    notes={notes}
+                    setNotes={setNotes}
                     editingId={editingId}
                     handleSubmit={handleAddApplication}
+                    handleCancelEdit={handleCancelEdit}
+                    
                 />
 
                 <ApplicationFilters

@@ -1,14 +1,19 @@
 function ApplicationForm({
-  company,
-  setCompany,
-  role,
-  setRole,
-  status,
-  setStatus,
-  location,
-  setLocation,
-  editingId,
-  handleSubmit,
+    company,
+    setCompany,
+    role,
+    setRole,
+    status,
+    setStatus,
+    location,
+    setLocation,
+    editingId,
+    jobUrl,
+    setJobUrl,
+    notes,
+    setNotes,
+    handleSubmit, 
+    handleCancelEdit,
 }) {
     return (
         <div className="card application-form-card">
@@ -59,9 +64,40 @@ function ApplicationForm({
                 />
                 </div>
 
-                <button className="primary-button" type="submit">
-                {editingId !== null ? "Update Application" : "Add Application"}
-                </button>
+                <div className="form-group">
+                    <label>Job URL</label>
+                    <input
+                        type="url"
+                        value={jobUrl}
+                        onChange={(event) => setJobUrl(event.target.value)}
+                        placeholder="https://..."
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Notes</label>
+                    <textarea
+                        value={notes}
+                        onChange={(event) => setNotes(event.target.value)}
+                        rows="4"
+                    />
+                </div>
+
+                <div className="form-actions">
+                    <button className="primary-button" type="submit">
+                        {editingId !== null ? "Update Application" : "Add Application"}
+                    </button>
+
+                    {editingId !== null && (
+                        <button
+                            className="secondary-button"
+                            type="button"
+                            onClick={handleCancelEdit}
+                            >
+                            Cancel
+                        </button>
+                    )}
+                </div>
             </form>
         </div>
     );

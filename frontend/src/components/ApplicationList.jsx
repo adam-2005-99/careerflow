@@ -23,7 +23,25 @@ function ApplicationList({
                     <p>{application.role}</p>
 
                     {application.location && (
-                    <p>{application.location}</p>
+                        <p>{application.location}</p>
+                    )}
+                    
+                    {application.job_url && (
+                        <p>
+                            <a
+                            href={application.job_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            >
+                            View job posting
+                            </a>
+                        </p>
+                    )}
+
+                    {application.notes && (
+                        <p className="application-notes">
+                            {application.notes}
+                        </p>
                     )}
 
                     <span
