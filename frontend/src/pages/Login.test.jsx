@@ -19,7 +19,7 @@ test("renders the login form", () => {
     );
 
     expect(
-        screen.getByRole("heading", { name: /login/i })
+        screen.getByRole("heading", { name: /Welcome Back/i })
     ).toBeInTheDocument();
 
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
@@ -57,7 +57,7 @@ test("shows an error when login credentials are invalid", async () => {
         "wrongpassword"
     );
 
-    
+
     await user.click(
         screen.getByRole("button", { name: /login/i })
     );

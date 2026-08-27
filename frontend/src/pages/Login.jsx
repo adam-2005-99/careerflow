@@ -12,7 +12,12 @@ function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    setError("");
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
+    // setError("");
 
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
@@ -42,38 +47,47 @@ function Login() {
   }
 
   return (
-    <div>
-        <h1>Login</h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Welcome Back</h1>
+        <p className="auth-subtitle">
+          Sign in to continue to CareerFlow
+        </p>
 
-        <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </div>
 
-            <div>
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </div>
 
-            <button type="submit">Login</button>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
+
+          <button className="primary-button auth-button" type="submit">Login</button>
+
         </form>
 
-        <p>
+        {error && <p className="auth-error">{error}</p>}
+
+        <p className="auth-switch">
             Don't have an account? <Link to="/register">Register</Link>
         </p>
 
-      {error && <p>{error}</p>}
+      </div>
+
     </div>
   );
 }
