@@ -4,6 +4,7 @@ import ApplicationForm from "../components/ApplicationForm";
 import ApplicationList from "../components/ApplicationList";
 import ApplicationFilters from "../components/ApplicationFilters";
 import ApplicationStats from "../components/ApplicationStats";
+import { API_URL } from "../config";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ function Dashboard() {
         try {
             // Check who is logged in
             const userResponse = await fetch(
-            "http://127.0.0.1:8000/api/auth/me",
+            `${API_URL}/api/auth/me`,
             {
                 headers: {
                 Authorization: `Bearer ${token}`,
@@ -47,7 +48,7 @@ function Dashboard() {
 
             // Get this user's job applications
             const applicationsResponse = await fetch(
-            "http://127.0.0.1:8000/api/applications/",
+            `${API_URL}/api/applications`,
             {
                 headers: {
                 Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ function Dashboard() {
 
             try {
                 const response = await fetch(
-                `http://127.0.0.1:8000/api/applications/${editingId}`,
+                `${API_URL}/api/applications/${editingId}`,
                 {
                     method: "PATCH",
                     headers: {
@@ -130,7 +131,7 @@ function Dashboard() {
 
         try {
             const response = await fetch(
-            "http://127.0.0.1:8000/api/applications/",
+            `${API_URL}/api/applications`,
             {
                 method: "POST",
                 headers: {
@@ -174,7 +175,7 @@ function Dashboard() {
 
         try {
             const response = await fetch(
-            `http://127.0.0.1:8000/api/applications/${applicationId}`,
+            `${API_URL}/api/applications/${applicationId}`,
             {
                 method: "DELETE",
                 headers: {
@@ -198,13 +199,6 @@ function Dashboard() {
         }
     }
 
-    // function handleEditApplication(application) {
-    //     setEditingId(application.id);
-    //     setCompany(application.company);
-    //     setRole(application.role);
-    //     setStatus(application.status);
-    //     setLocation(application.location || "");
-    // }
 
     function handleEditApplication(application) {
         setEditingId(application.id);

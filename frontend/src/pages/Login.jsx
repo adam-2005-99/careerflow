@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,21 +47,23 @@ function Login() {
 
         <form onSubmit={handleSubmit}>
             <div>
-            <label>Email</label>
-            <input
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-            />
+              />
             </div>
 
             <div>
-            <label>Password</label>
-            <input
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-            />
+              />
             </div>
 
             <button type="submit">Login</button>
