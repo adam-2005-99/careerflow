@@ -5,6 +5,7 @@ __pycache__/
 
 # Environment variables
 .env
+.env.production
 
 # Node
 frontend/node_modules/
