@@ -36,7 +36,34 @@ function Register() {
         return;
       }
 
-      navigate("/login");
+      const loginResponse = await fetch(
+        `${API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const loginData = await loginResponse.json();
+
+      if (!loginResponse.ok) {
+        setError(
+          loginData.detail ||
+            "Account created, but automatic login failed"
+        );
+        return;
+      }
+
+      localStorage.setItem("access_token", loginData.access_token);
+
+      navigate("/dashboard");
+
     } catch (error) {
       setError("Could not connect to the server");
     }
