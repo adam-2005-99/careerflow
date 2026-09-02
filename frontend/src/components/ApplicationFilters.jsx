@@ -13,16 +13,24 @@ function ApplicationFilters({
                 onChange={(event) => setSearchTerm(event.target.value)}
             />
 
-            <select
-                value={statusFilter}
-                onChange={(event) => setStatusFilter(event.target.value)}
-            >
-                <option value="All">All statuses</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Offer">Offer</option>
-                <option value="Rejected">Rejected</option>
-            </select>
+            <div className="filter-chips">
+                {["All", "Applied", "Interview", "Offer", "Rejected"].map((status) => (
+                    <button
+                        key={status}
+                        type="button"
+                        className={`filter-chip ${
+                            statusFilter === status ? "active" : ""
+                        }`}
+                        onClick={() => setStatusFilter(status)}
+                    >
+                        <span
+                            className={`filter-dot filter-dot-${status.toLowerCase()}`}
+                        ></span>
+
+                        {status}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 }

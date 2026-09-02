@@ -88,15 +88,14 @@ function ApplicationForm({
                         {editingId !== null ? "Update Application" : "Add Application"}
                     </button>
 
-                    {editingId !== null && (
-                        <button
-                            className="secondary-button"
-                            type="button"
-                            onClick={handleCancelEdit}
-                            >
-                            Cancel
-                        </button>
-                    )}
+
+                    <button
+                        className="secondary-button"
+                        type="button"
+                        onClick={handleCancelEdit}
+                        >
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>

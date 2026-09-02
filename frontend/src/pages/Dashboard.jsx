@@ -5,6 +5,8 @@ import ApplicationList from "../components/ApplicationList";
 import ApplicationFilters from "../components/ApplicationFilters";
 import ApplicationStats from "../components/ApplicationStats";
 import { API_URL } from "../config";
+import {LogOut, Plus } from "lucide-react";
+import jobHuntIllustration from "../assets/job-hunt.svg";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
@@ -20,6 +22,7 @@ function Dashboard() {
     const [statusFilter, setStatusFilter] = useState("All");
     const [jobUrl, setJobUrl] = useState("");
     const [notes, setNotes] = useState("");
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
 
     useEffect(() => {
@@ -119,6 +122,7 @@ function Dashboard() {
                 setLocation("");
                 setJobUrl("");
                 setNotes("");
+                setIsFormOpen(false);
 
                 return;
             } catch (error) {
@@ -165,6 +169,7 @@ function Dashboard() {
             setLocation("");
             setJobUrl("");
             setNotes("");
+            setIsFormOpen(false);
         } catch (error) {
             setError("Could not connect to the server");
         }
@@ -208,6 +213,8 @@ function Dashboard() {
         setLocation(application.location || "");
         setJobUrl(application.job_url || "");
         setNotes(application.notes || "");
+
+        setIsFormOpen(true);
     }
 
     function handleCancelEdit() {
@@ -218,6 +225,7 @@ function Dashboard() {
         setLocation("");
         setJobUrl("");
         setNotes("");
+        setIsFormOpen(false);
     }
 
     const filteredApplications = applications.filter((application) => {
@@ -237,60 +245,112 @@ function Dashboard() {
         return <p>Loading...</p>;
     }
 
-    return (
-        <div className="dashboard">
-            <header className="dashboard-header">
-            <div>
-                <h1>CareerFlow</h1>
-                <p>Welcome, {user.email}</p>
-            </div>
+    function handleOpenAddForm() {
+        setEditingId(null);
 
-            <button
-                className="logout-button"
-                onClick={() => {
-                localStorage.removeItem("access_token");
-                navigate("/login");
-                }}
-            >
-                Logout
-            </button>
+        setCompany("");
+        setRole("");
+        setStatus("Applied");
+        setLocation("");
+        setJobUrl("");
+        setNotes("");
+
+        setIsFormOpen(true);
+    }
+
+
+    return (
+        <main className="dashboard">
+            <header className="dashboard-header">
+                <div className="dashboard-brand">
+                    <div className="dashboard-logo">C</div>
+                    <span>CareerFlow</span>
+                </div>
+
+                <button
+                    className="logout-button"
+                    onClick={() => {
+                    localStorage.removeItem("access_token");
+                    navigate("/login");
+                    }}
+                >
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                </button>
             </header>
 
-            <main className="dashboard-content">
+            <div className="dashboard-content">
+                <div className="dashboard-welcome">
+                    <div className="welcome-text">
+                        <h1>Welcome back!</h1>
+                        <p>Here's an overview of your job search progress.</p>
+                    </div>
+
+                    <div className="welcome-visual">
+                        <img
+                            src={jobHuntIllustration}
+                            alt=""
+                            className="welcome-illustration"
+                        />
+                    </div>
+                </div>
                 <ApplicationStats applications={applications}/>
-                <ApplicationForm
-                    company={company}
-                    setCompany={setCompany}
-                    role={role}
-                    setRole={setRole}
-                    status={status}
-                    setStatus={setStatus}
-                    location={location}
-                    setLocation={setLocation}
-                    jobUrl={jobUrl}
-                    setJobUrl={setJobUrl}
-                    notes={notes}
-                    setNotes={setNotes}
-                    editingId={editingId}
-                    handleSubmit={handleAddApplication}
-                    handleCancelEdit={handleCancelEdit}
-                    
-                />
 
-                <ApplicationFilters
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    statusFilter={statusFilter}
-                    setStatusFilter={setStatusFilter}
-                />
+                <div className="applications-panel">
+                    <div className="applications-section-header">
+                        <h2>Your Applications</h2>
 
-                <ApplicationList
-                    applications={filteredApplications}
-                    handleEditApplication={handleEditApplication}
-                    handleDeleteApplication={handleDeleteApplication}
-            />
-            </main>
-        </div>
+                        <button
+                            className="primary-button add-application-button"
+                            onClick={handleOpenAddForm}
+                        >
+                            <Plus size={18} />
+                            <span>Add Application</span>
+                        </button>
+                    </div>
+
+                    <ApplicationFilters
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        statusFilter={statusFilter}
+                        setStatusFilter={setStatusFilter}
+                    />
+
+                    <ApplicationList
+                        applications={filteredApplications}
+                        handleEditApplication={handleEditApplication}
+                        handleDeleteApplication={handleDeleteApplication}
+                    />
+                </div>
+        
+            </div>
+
+             {isFormOpen && (
+                <div className="modal-overlay">
+                    <div className="application-modal">
+                    <ApplicationForm
+                        company={company}
+                        setCompany={setCompany}
+                        role={role}
+                        setRole={setRole}
+                        status={status}
+                        setStatus={setStatus}
+                        location={location}
+                        setLocation={setLocation}
+                        jobUrl={jobUrl}
+                        setJobUrl={setJobUrl}
+                        notes={notes}
+                        setNotes={setNotes}
+                        editingId={editingId}
+                        handleSubmit={handleAddApplication}
+                        handleCancelEdit={handleCancelEdit}
+                    />
+                    </div>
+                </div>
+            )}
+        </main>
+
+
     );
 }
 
