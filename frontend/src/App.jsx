@@ -2,8 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectRoute";
-import "./App.css";
 import Register from "./pages/Register";
+import "./styles/global.css";
+import "./styles/dashboard.css";
+import "./styles/applications.css";
+import "./styles/forms.css";
+import "./styles/auth.css";
 
 function App() {
   return (
