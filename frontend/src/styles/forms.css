@@ -61,3 +61,50 @@
   display: flex;
   gap: 12px;
 }
+
+.delete-confirmation-modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+
+  text-align: center;
+}
+
+.delete-confirmation-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.delete-confirmation-modal h2 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 22px;
+}
+
+.delete-confirmation-modal p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.delete-confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}

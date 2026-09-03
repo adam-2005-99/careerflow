@@ -5,7 +5,7 @@ import ApplicationList from "../components/ApplicationList";
 import ApplicationFilters from "../components/ApplicationFilters";
 import ApplicationStats from "../components/ApplicationStats";
 import { API_URL } from "../config";
-import {LogOut, Plus } from "lucide-react";
+import {LogOut, Plus, Trash2 } from "lucide-react";
 import jobHuntIllustration from "../assets/job-hunt.svg";
 
 function Dashboard() {
@@ -23,6 +23,7 @@ function Dashboard() {
     const [jobUrl, setJobUrl] = useState("");
     const [notes, setNotes] = useState("");
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [applicationToDelete, setApplicationToDelete] = useState(null);
 
 
     useEffect(() => {
@@ -199,9 +200,20 @@ function Dashboard() {
                 (application) => application.id !== applicationId
             )
             );
+
+            setApplicationToDelete(null);
+
         } catch (error) {
             setError("Could not connect to the server");
         }
+    }
+
+    function handleDeleteClick(id) {
+        setApplicationToDelete(id);
+    }
+
+    function handleCancelDelete(){
+        setApplicationToDelete(null);
     }
 
 
@@ -319,7 +331,7 @@ function Dashboard() {
                     <ApplicationList
                         applications={filteredApplications}
                         handleEditApplication={handleEditApplication}
-                        handleDeleteApplication={handleDeleteApplication}
+                        handleDeleteApplication={handleDeleteClick}
                     />
                 </div>
         
@@ -348,6 +360,44 @@ function Dashboard() {
                     </div>
                 </div>
             )}
+
+            {applicationToDelete !== null && (
+                <div className="modal-overlay">
+                    <div className="delete-confirmation-modal">
+                    <div className="delete-confirmation-icon">
+                        <Trash2 size={24} />
+                    </div>
+
+                    <h2>Delete application?</h2>
+
+                    <p>
+                        Are you sure you want to delete this application?
+                        This action cannot be undone.
+                    </p>
+
+                    <div className="delete-confirmation-actions">
+                        <button
+                        className="secondary-button"
+                        onClick={handleCancelDelete}
+                        >
+                        Cancel
+                        </button>
+
+                        <button
+                        className="danger-button"
+                        onClick={() =>
+                            handleDeleteApplication(applicationToDelete)
+                        }
+                        >
+                        <Trash2 size={17} />
+                        Delete
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            )}
+
+
         </main>
 
 

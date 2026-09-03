@@ -102,6 +102,10 @@
   background: #ef4444;
 }
 
+.filters p{
+  align-self: center;
+}
+
 .applications-table {
   padding: 0 24px 12px;
 }
@@ -249,6 +253,12 @@
 
 .application-item a:hover {
   text-decoration: underline;
+}
+
+.empty-applications {
+  margin: 0;
+  padding: 20px 24px 24px 48px;
+  color: #6b7280;
 }
 
 @media (max-width: 600px) {

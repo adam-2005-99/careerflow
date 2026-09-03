@@ -8,7 +8,7 @@ function ApplicationList({
   handleDeleteApplication,
 }) {
   if (applications.length === 0) {
-    return <p>No applications yet.</p>;
+    return <p className="empty-applications">No applications yet.</p>;
   }
 
     return (
