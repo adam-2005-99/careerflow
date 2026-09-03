@@ -250,3 +250,76 @@
 .application-item a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+  .applications-section-header {
+    align-items: flex-start;
+    padding: 20px 16px 14px;
+  }
+
+  .applications-section-header h2 {
+    font-size: 22px;
+  }
+
+  .add-application-button {
+    padding: 10px 12px;
+  }
+
+  .filters {
+    padding: 0 16px 20px;
+  }
+
+  .applications-table {
+    padding: 0 16px 16px;
+  }
+
+  .applications-table-header {
+    display: none;
+  }
+
+  .applications-list {
+    gap: 14px;
+  }
+
+  .application-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 16px;
+
+    padding: 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: white;
+  }
+
+  .application-company {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .application-position {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .application-status {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .application-location {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .application-actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-end;
+    align-self: start;
+  }
+
+  .application-notes {
+    margin: 6px 0 0;
+  }
+}
