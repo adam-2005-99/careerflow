@@ -1,7 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 
 
-
 function ApplicationList({
   applications,
   handleEditApplication,

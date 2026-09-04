@@ -23,28 +23,31 @@ function ApplicationForm({
 
             <form className="application-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                <label>Company</label>
-                <input
-                    type="text"
-                    value={company}
-                    onChange={(event) => setCompany(event.target.value)}
-                    required
-                />
+                    <label htmlFor="company">Company</label>
+                    <input
+                        id="company"
+                        type="text"
+                        value={company}
+                        onChange={(event) => setCompany(event.target.value)}
+                        required
+                    />
                 </div>
 
                 <div className="form-group">
-                <label>Role</label>
-                <input
-                    type="text"
-                    value={role}
-                    onChange={(event) => setRole(event.target.value)}
-                    required
-                />
+                    <label htmlFor="role">Role</label>
+                    <input
+                        id="role"
+                        type="text"
+                        value={role}
+                        onChange={(event) => setRole(event.target.value)}
+                        required
+                    />
                 </div>
 
                 <div className="form-group">
-                    <label>Status</label>
+                    <label htmlFor="status">Status</label>
                     <select
+                        id="status"
                         value={status}
                         onChange={(event) => setStatus(event.target.value)}
                     >
@@ -56,17 +59,19 @@ function ApplicationForm({
                 </div>
 
                 <div className="form-group">
-                <label>Location</label>
-                <input
-                    type="text"
-                    value={location}
-                    onChange={(event) => setLocation(event.target.value)}
-                />
+                    <label htmlFor="location">Location</label>
+                    <input
+                        id="location"
+                        type="text"
+                        value={location}
+                        onChange={(event) => setLocation(event.target.value)}
+                    />
                 </div>
 
                 <div className="form-group">
-                    <label>Job URL</label>
+                    <label htmlFor="job-url">Job URL</label>
                     <input
+                        id="job-url"
                         type="url"
                         value={jobUrl}
                         onChange={(event) => setJobUrl(event.target.value)}
@@ -75,8 +80,9 @@ function ApplicationForm({
                 </div>
 
                 <div className="form-group">
-                    <label>Notes</label>
+                    <label htmlFor="notes">Notes</label>
                     <textarea
+                        id="notes"
                         value={notes}
                         onChange={(event) => setNotes(event.target.value)}
                         rows="4"
@@ -87,7 +93,6 @@ function ApplicationForm({
                     <button className="primary-button" type="submit">
                         {editingId !== null ? "Update Application" : "Add Application"}
                     </button>
-
 
                     <button
                         className="secondary-button"

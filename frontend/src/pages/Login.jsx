@@ -17,7 +17,7 @@ function Login() {
       return;
     }
 
-    // setError("");
+    setError("");
 
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {

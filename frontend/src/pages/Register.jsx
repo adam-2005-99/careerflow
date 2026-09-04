@@ -80,8 +80,9 @@ function Register() {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -90,8 +91,9 @@ function Register() {
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <label id="password">Password</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}

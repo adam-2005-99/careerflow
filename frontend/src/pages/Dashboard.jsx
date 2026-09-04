@@ -75,6 +75,16 @@ function Dashboard() {
     loadDashboard();
     }, [navigate]);
 
+    function resetFormFields() {
+        setEditingId(null);
+        setCompany("");
+        setRole("");
+        setStatus("Applied");
+        setLocation("");
+        setJobUrl("");
+        setNotes("");
+    }
+
     async function handleAddApplication(event) {
         event.preventDefault();
 
@@ -116,13 +126,7 @@ function Dashboard() {
                 )
                 );
 
-                setEditingId(null);
-                setCompany("");
-                setRole("");
-                setStatus("Applied");
-                setLocation("");
-                setJobUrl("");
-                setNotes("");
+                resetFormFields()
                 setIsFormOpen(false);
 
                 return;
@@ -164,12 +168,7 @@ function Dashboard() {
             setApplications((currentApplications) => 
                 [...currentApplications,newApplication, ]);
 
-            setCompany("");
-            setRole("");
-            setStatus("Applied");
-            setLocation("");
-            setJobUrl("");
-            setNotes("");
+            resetFormFields();
             setIsFormOpen(false);
         } catch (error) {
             setError("Could not connect to the server");
@@ -230,13 +229,7 @@ function Dashboard() {
     }
 
     function handleCancelEdit() {
-        setEditingId(null);
-        setCompany("");
-        setRole("");
-        setStatus("Applied");
-        setLocation("");
-        setJobUrl("");
-        setNotes("");
+        resetFormFields();
         setIsFormOpen(false);
     }
 
@@ -258,15 +251,7 @@ function Dashboard() {
     }
 
     function handleOpenAddForm() {
-        setEditingId(null);
-
-        setCompany("");
-        setRole("");
-        setStatus("Applied");
-        setLocation("");
-        setJobUrl("");
-        setNotes("");
-
+        resetFormFields();
         setIsFormOpen(true);
     }
 

@@ -170,9 +170,6 @@
   align-items: center;
 }
 
-.application-status .status-badge {
-  margin-top: 0;
-}
 
 .application-item:last-child {
   border-bottom: none;
